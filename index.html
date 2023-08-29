@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculo de rentabilidad aplicaciones de conducción y delivery</title>
+    <title>Calculadora de ganancias diarias</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -135,7 +135,7 @@
             </svg>
         </div>
         
-        <h1>Calculo de rentabilidad aplicaciones de conducción y delivery</h1>
+        <h1>Calculadora de ganancias diarias</h1>
         <label for="fecha">Fecha:</label>
         <input type="date" id="fecha">
         
@@ -151,13 +151,13 @@
         <button id="calcular">Calcular</button>
         <button id="refrescar">Refrescar</button>
 
-        <div class="respuesta" id="respuestaKm">
+        <div class="respuesta" id="gananciasPorKm">
             <h3>Ganancias por Km:</h3>
-            <p class="result" id="gananciasPorKm"></p>
+            <p class="result"></p>
         </div>
-        <div class="respuesta" id="respuestaHora">
+        <div class="respuesta" id="gananciasPorHora">
             <h3>Ganancias por Hr:</h3>
-            <p class="result" id="gananciasPorHora"></p>
+            <p class="result"></p>
         </div>
     </div>
     
@@ -188,8 +188,8 @@
             const gananciaDia = parseFloat(gananciaInput.value);
             const isValid = !isNaN(kmManejados) && !isNaN(horasTrabajadas) && !isNaN(gananciaDia) && kmManejados !== 0 && horasTrabajadas !== 0;
             
-            respuestaKm.innerHTML = isValid ? `Generaste ${(gananciaDia / kmManejados).toFixed(2)} pesos por Km manejado.` : '';
-            respuestaHora.innerHTML = isValid ? `Generaste ${(gananciaDia / horasTrabajadas).toFixed(2)} pesos por Hora trabajada.` : '';
+            respuestaKm.querySelector('.result').innerHTML = isValid ? `Generaste ${(gananciaDia / kmManejados).toFixed(2)} pesos por Km manejado.` : '';
+            respuestaHora.querySelector('.result').innerHTML = isValid ? `Generaste ${(gananciaDia / horasTrabajadas).toFixed(2)} pesos por Hora trabajada.` : '';
         }
 
         function limpiarCampos() {
@@ -197,8 +197,8 @@
             horasInput.value = '';
             gananciaInput.value = '';
             fechaInput.value = '';
-            respuestaKm.innerHTML = '';
-            respuestaHora.innerHTML = '';
+            respuestaKm.querySelector('.result').innerHTML = '';
+            respuestaHora.querySelector('.result').innerHTML = '';
         }
 
         function activarModoOscuro() {
