@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculo de rentabilidad aplicaciones de conducción y delivery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background-color 0.3s ease;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            position: relative;
+            transition: box-shadow 0.3s ease;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            transition: text-shadow 0.3s ease;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"], input[type="text"], button {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            transition: box-shadow 0.3s ease;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .respuesta {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .respuesta h3 {
+            font-weight: bold;
+            color: red;
+            margin: 0;
+            position: absolute;
+            top: -18px;
+            left: 10px;
+            background-color: white;
+            padding: 0 5px;
+        }
+
+        .respuesta:nth-child(2) {
+            margin-bottom: 0;
+        }
+
+        /* Modo Oscuro */
+        body.dark-mode {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+
+        body.dark-mode .container {
+            background-color: #2a2a2a;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode h1 {
+            text-shadow: none;
+        }
+
+        body.dark-mode input, body.dark-mode button, body.dark-mode .respuesta {
+            border-color: #444;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode-toggle {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .dark-mode-toggle svg {
+            width: 30px;
+            height: 30px;
+            fill: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dark-mode-toggle" id="modoOscuro">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 0a12 12 0 1 1 0 24 12 12 0 0 1 0-24zm0 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM7 11a5 5 0 0 1 5-5v10a5 5 0 0 1-5-5z"/>
+            </svg>
+        </div>
+        
+        <h1>Calculo de rentabilidad aplicaciones de conducción y delivery</h1>
+
+        <label for="kmManejados">Kilómetros manejados:</label>
+        <input type="number" id="kmManejados" placeholder="Ingrese los km manejados">
+
+        <label for="horasTrabajadas">Horas trabajadas el día de hoy:</label>
+        <input type="number" id="horasTrabajadas" placeholder="Ingrese las horas trabajadas">
+
+        <label for="gananciaDia">Ganancia del día:</label>
+        <input type="number" id="gananciaDia" placeholder="Ingrese la ganancia del día">
+
+        <button id="calcular">Calcular</button>
+
+        <div class="respuesta" id="respuestaKm">
+            <h3>Ganancias por Km:</h3>
+        </div>
+        <div class="respuesta" id="respuestaHora">
+            <h3>Ganancias por Hr:</h3>
+        </div>
+    </div>
+
+    <script>
+        const kmInput = document.getElementById('kmManejados');
+        const horasInput = document.getElementById('horasTrabajadas');
+        const gananciaInput = document.getElementById('gananciaDia');
+        const respuestaKm = document.getElementById('respuestaKm');
+        const respuestaHora = document.getElementById('respuestaHora');
+        const calcularButton = document.getElementById('calcular');
+        const modoOscuroButton = document.getElementById('modoOscuro');
+
+        calcularButton.addEventListener('click', calcularRentabilidad);
+        modoOscuroButton.addEventListener('click', activarModoOscuro);
+
+        function calcularRentabilidad() {
+            const kmManejados = parseFloat(kmInput.value);
+            const horasTrabajadas = parseFloat(horasInput.value);
+            const gananciaDia = parseFloat(gananciaInput.value);
+            
+            if (!isNaN(kmManejados) && !isNaN(horasTrabajadas) && !isNaN(gananciaDia) && kmManejados !== 0 && horasTrabajadas !== 0) {
+                const rentabilidadKm = gananciaDia / kmManejados;
+                const rentabilidadHora = gananciaDia / horasTrabajadas;
+
+                respuestaKm.textContent = `Generaste ${rentabilidadKm.toFixed(2)} pesos por Km manejado.`;
+                respuestaHora.textContent = `Generaste ${rentabilidadHora.toFixed(2)} pesos por Hora trabajada.`;
+            } else {
+                respuestaKm.textContent = '';
+                respuestaHora.textContent = '';
+            }
+        }
+
+        function activarModoOscuro() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>
