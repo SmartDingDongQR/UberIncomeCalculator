@@ -24,6 +24,7 @@
             max-width: 400px;
             box-sizing: border-box;
             position: relative;
+            text-align: center;
         }
 
         h1 {
@@ -38,7 +39,7 @@
             margin-bottom: 5px;
         }
 
-        input[type="number"], button {
+        input[type="number"], input[type="date"], button {
             width: 100%;
             padding: 5px;
             margin-bottom: 15px;
@@ -104,9 +105,16 @@
         }
 
         .dark-mode-toggle svg {
-            width: 30px;
-            height: 30px;
+            width: 24px;
+            height: 24px;
             fill: #333;
+        }
+        
+        @media screen and (max-width: 480px) {
+            .container {
+                max-width: 100%;
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -119,7 +127,9 @@
         </div>
         
         <h1>Calculo de rentabilidad aplicaciones de conducción y delivery</h1>
-
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha">
+        
         <label for="kmManejados">Kilómetros manejados:</label>
         <input type="number" id="kmManejados" placeholder="Ingrese los km manejados">
 
@@ -130,35 +140,51 @@
         <input type="number" id="gananciaDia" placeholder="Ingrese la ganancia del día">
 
         <button id="calcular">Calcular</button>
+        <button id="refrescar">Refrescar</button>
 
         <div class="respuesta" id="respuestaKm">
             <h3>Ganancias por Km:</h3>
+            <p class="result" id="gananciasPorKm"></p>
         </div>
         <div class="respuesta" id="respuestaHora">
             <h3>Ganancias por Hr:</h3>
+            <p class="result" id="gananciasPorHora"></p>
         </div>
     </div>
 
     <script>
+        // Tu código JavaScript aquí
         const kmInput = document.getElementById('kmManejados');
         const horasInput = document.getElementById('horasTrabajadas');
         const gananciaInput = document.getElementById('gananciaDia');
-        const respuestaKm = document.getElementById('respuestaKm');
-        const respuestaHora = document.getElementById('respuestaHora');
+        const fechaInput = document.getElementById('fecha');
+        const respuestaKm = document.getElementById('gananciasPorKm');
+        const respuestaHora = document.getElementById('gananciasPorHora');
         const calcularButton = document.getElementById('calcular');
+        const refrescarButton = document.getElementById('refrescar');
         const modoOscuroButton = document.getElementById('modoOscuro');
 
-        calcularButton.addEventListener('click', () => calcularRentabilidad(respuestaKm, respuestaHora));
+        calcularButton.addEventListener('click', () => calcularRentabilidad());
+        refrescarButton.addEventListener('click', () => limpiarCampos());
         modoOscuroButton.addEventListener('click', activarModoOscuro);
 
-        function calcularRentabilidad(respKm, respHora) {
+        function calcularRentabilidad() {
             const kmManejados = parseFloat(kmInput.value);
             const horasTrabajadas = parseFloat(horasInput.value);
             const gananciaDia = parseFloat(gananciaInput.value);
             const isValid = !isNaN(kmManejados) && !isNaN(horasTrabajadas) && !isNaN(gananciaDia) && kmManejados !== 0 && horasTrabajadas !== 0;
             
-            respKm.innerHTML = isValid ? `<h3>Ganancias por Km:</h3>Generaste ${(gananciaDia / kmManejados).toFixed(2)} pesos por Km manejado.` : '';
-            respHora.innerHTML = isValid ? `<h3>Ganancias por Hr:</h3>Generaste ${(gananciaDia / horasTrabajadas).toFixed(2)} pesos por Hora trabajada.` : '';
+            respuestaKm.innerHTML = isValid ? `Generaste ${(gananciaDia / kmManejados).toFixed(2)} pesos por Km manejado.` : '';
+            respuestaHora.innerHTML = isValid ? `Generaste ${(gananciaDia / horasTrabajadas).toFixed(2)} pesos por Hora trabajada.` : '';
+        }
+
+        function limpiarCampos() {
+            kmInput.value = '';
+            horasInput.value = '';
+            gananciaInput.value = '';
+            fechaInput.value = '';
+            respuestaKm.innerHTML = '';
+            respuestaHora.innerHTML = '';
         }
 
         function activarModoOscuro() {
